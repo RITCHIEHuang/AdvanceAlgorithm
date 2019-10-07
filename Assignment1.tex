@@ -1,0 +1,329 @@
+\documentclass[a4paper, 12pt, titlepage]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proof}{Proof}
+
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithmicx,algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\usepackage{mathtools}
+
+\usepackage{graphicx}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+\usepackage[CJKbookmarks]{hyperref}
+
+\usepackage{enumerate}
+
+\title{Problem Set 1 Solutions}
+\author{ritchie huang}
+\date{2019-09-25}
+
+\begin{document}
+
+\section{Problem 1}
+
+\subsection{Modified Algorithm}
+
+Given weighted graph ${\bf G(V, E), |V| = n}$. Assuming the min-cut is ${\bf C}$, and the weights of all edges in ${\bf C}$ is ${\bf W}$.
+We define the weight of the edge ${\bf e_k}$ to ${\bf w_{k}}, k = 1, 2, \cdots, |E|$.The original contraction algorithm can be modified as below:
+\begin{algorithm}[h]
+    \caption{Modified Karger's Contraction Algorithm}
+    \begin{algorithmic}[1]
+        \Require {\bf G(V,E)}
+        \Ensure {\bf Min-cut C}
+
+        \Function{\bf Modified-Contraction}{G}
+        % \State $\forall$ $w_{ij}$ in $G$, modify the edge with weight $w_{ij}$ to {\bf$w_{ij}$} parallel edges 
+        %         between $v_{i}$ and $v_{j}$, the new graph ${\bf G'(V, E')}$ with $ W = \sum_{i < j} w_{ij}$ edges.
+        \While{{\bf |V| > 2}}
+            \State Select edge ${\bf e_{k}} \in {\bf E}$ with probability ${\bf \frac{w_{k}}{\sum_{j = 1}^{|E|} w_{j}}}, k = 1, 2, \cdots, |E|$;
+            \State Merge the endpoints of ${\bf e_{k}}$, producing graph ${\bf G'}$;
+            \State {\bf Modified-Contraction(${\bf G' }$)};
+        \EndWhile
+
+        \State \Return sets of edges remaining in the graph as ${\bf C}$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Proof for the success probability of algorithm}
+
+In the $i$-th ground contraction, the probability to choose an edge which is in the weighted min-cut {\bf C} is {\bf at most}:
+\[
+    \frac{W}{\frac{W (n - i)}{2}} = \frac{2}{n - i}
+\]
+
+The algorithm perform $n - 2$ contractions on the graph, we get this lower bound:
+\begin{equation}
+    \begin{aligned}
+        Pr \big[ \text{return weighted min-cut \textbf{C} }\big] &\geq \prod_{i = 0}^{n - 2} (1 - \frac{2}{n - i}) \\
+                                                 &= \prod_{i = 0}^{n - 3} \frac{ n - i - 2}{n - i} \\
+                                                 &= \frac{2}{n ( n - 1)}
+    \end{aligned}
+\end{equation}
+
+
+\section{Problem 2}
+
+\subsection{Calculate the expected value }
+
+% For any $S \in \mathcal{F} = \big\{ H \subseteq V : |H| = \frac{n}{2} \big\} $, they are chosen with same probability:
+% \[
+%     Pr[\text{Select S}] = \frac{1}{\binom{n}{\frac{n}{2}}}
+% \]
+
+% $\forall S \in \mathcal{F}, T = V \backslash S$, the expected cut size is:
+% \begin{equation}
+%     \begin{aligned}
+%         E(S, T) &= \sum_{ e \in E} Pr \big[ (|e \cap S| = 1) \land (|e \cap T| = 1) \big] \\
+%                 &= \sum_{ e \in E} \frac{1}{\binom{\frac{n}{2}}{1}} \cdot \frac{1}{\binom{\frac{n}{2}}{1}} \\
+%                 &= \frac{4 m}{n^2}
+%     \end{aligned}
+% \end{equation}
+
+For any $k \in \{  0, 1, 2, \cdots, m \}$, the probability of $|E(S, T)| = k$ should be:
+\begin{equation}
+    \begin{aligned}
+        Pr \big[ |E(S, T)| = k \big] &= \frac{\binom{m}{k}}{2^{m}}
+    \end{aligned}
+\end{equation}
+
+
+The expected value can be calculated as below:
+\begin{equation}
+    \begin{aligned}
+        \mathbb{E} \bigg[| E(S, T) | \bigg] &= \sum_{k = 0}^{m} Pr \big[ | E(S, T) | = k] \cdot k \\
+                               &= \sum_{k = 0}^{m} \frac{\binom{m}{k}}{2^{m}} \cdot k  \\
+                               &= \frac{1}{2^{m}} \sum_{k = 0}^{m} \binom{m}{k} \cdot k \\
+                               &= \frac{1}{2^{m}} 2^{m - 1} m \\
+                               &= \frac{m}{2}
+    \end{aligned}
+\end{equation}
+
+\subsection{Algorithm to generate subset}
+
+\begin{algorithm}[h]
+    \caption{Subroutine to generate Subset}
+    \begin{algorithmic}[1]
+        \Require $\mathcal{R(\cdot)}$, {\bf V}
+        \Ensure S
+        \Function{Generate}{$\mathcal{R(\cdot)}$, {\bf V}}
+            \State Initialize {\bf S = $\emptyset$}
+            \While{|{\bf S}| < $\frac{n}{2}$}
+                \For{$v \in {\bf V}$}
+                    \State $ p = \mathcal R(v)$
+                    \If{$p \geq \frac{1}{2}$}
+                        \State ${\bf S} = {\bf S} \cup \{ v \}$;
+                    \EndIf
+                \EndFor
+            \EndWhile
+            \State \Return {\bf S}
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+
+To analysis the correctness of the algorithm, we need to prove that:
+$ \forall S \in \mathcal{F}$, the uniformal probability is given below:
+\[
+    \Pr [ \text{ Choose {\bf  S}} ] = \frac{1}{\binom{n}{\frac{n}{2}}}, \qquad \forall S \in \mathcal{F}.
+\]
+
+Given random variables generated by the algorithm, $\Pr [X_i = 1] = \frac{1}{2}, i = 1, 2, \cdots, n$, 
+For any ${\bf S}$ is chosen only and if only when there exits $\frac{n}{2}$ random variables is equal to $1$.
+Define $Y_i = \sum_{k = 0}^{n} X_{k}, i = 1, 2, \cdots, \binom{n}{\frac{n}{2}}$.
+\begin{equation}
+    \begin{aligned}
+        \mathbb E \big[ Y_{i} = \frac{n}{2} \big] &= \mathbb E \big[ \sum_{k = 0}^{n} X_{k} = \frac{n}{2} \big] \\
+                                                  &= \binom{n}{\frac{n}{2}} \mathbb E [X_i] \\
+                                                  &= \frac{1}{2} \binom{n}{\frac{n}{2}} 
+    \end{aligned}
+\end{equation}
+This is exactly the same with uniform distribution.
+
+In the procedure of the algorithm, if we have generate a qualified subset $S$, the algorithm finish immediately, expected number of times
+to call the $\mathcal{R(\cdot)}$ subroutine can be derived as below:
+\begin{equation}
+    \begin{aligned}
+        \mathbb E \big[ N \big] &= \sum_{k = \frac{n}{2}}^{n} \Pr[ N_{k} = k] \cdot k \\
+                                &= \sum_{k = \frac{n}{2}}^{n} \binom{k - 1}{\frac{n}{2} - 1} \big( \frac{1}{2} \big)^{k - 1} \cdot \frac{1}{2} \cdot k \\
+                                &= \sum_{k = \frac{n}{2}}^{n} \binom{k - 1}{\frac{n}{2} - 1} \big( \frac{1}{2} \big)^{k} \cdot k \\
+    \end{aligned}
+\end{equation}
+
+\section{Problem 3}
+As vertices in the rooted tree has recursive structure.We consider to assign a polynomial to each vertex in the tree.
+For earch vertex $v \in T$ with height $h$, the polynomial is defined as :
+\[
+    P_{v} = \begin{cases}
+        x_{0}, \quad h = 0,  \\
+        \prod_{i = 1}^{k} \left( x_{h} - P_{u_{i}} \right), h \geq 1 
+    \end{cases}
+\]
+
+Given rooted tree $T$ with height $h$ and $n$ vertices, according to the polynomial defined above, there are $h + 1$ variables in $P_{root(T)} \rightarrow \left\{ x_{0}, x_{1}, \ldots, x_{h} \right\}$ , 
+it's necessary for us to figure out the degree of $P_{root(T)}$.
+Expand $P_{root(T)}$, we get:
+\begin{equation}
+    \begin{aligned}
+        P_{root(T)} &= \left( x_{h} - P_{v_{1}} \right) \left( x_{h} - P_{v_{2}} \right) \cdots \left( x_{h} - P_{v_{k}}\right) \\
+                    &= x_{h}^{k} + \ldots + \prod_{i = 1}^{k} P_{v_{i}}
+    \end{aligned}
+\end{equation}
+
+$P_{root(T)}$ is then divided into 3 parts.We analysis the degree one by one.
+\[
+    \mathbf{Deg} \left( x_{h}^{k} \right) = k
+\]
+\[
+    \mathbf{Deg} \left( \ldots \right) = \max \limits_{1 \leq i \leq k - 1} \sum_{k = 1}^{i} {\mathbf{Deg} \left( P_{v_{k}} \right)} + k - i
+\]
+\[
+    \mathbf{Deg} \left( \prod_{i = 1}^{k} P_{v_{i}} \right) = \sum_{i = 1}^{k} \mathbf{Deg} \left( P_{v_{i}}\right) = n
+\]
+As $\forall i \in \{1, 2, \ldots, k \}, \mathbf{Deg} \left( P_{v_{i}} \right) \geq 1$. It's easy to prove that: 
+\[
+    n = \mathbf{Deg} \left( \prod_{i = 1}^{k} P_{v_{i}} \right) \geq \mathbf{Deg} \left( \ldots \right) \geq \mathbf{Deg} \left( x_{h}^{k} \right) = k
+\]
+where $n$ is the number of vertices in rooted tree $T$.
+
+Now it's clear that $P_{root(T)}$ is a $h + 1$ multivariate polynomial with degree $n$.
+We are going to construct polynomial for rooted trees $T_{1}$ and $T_{2}$, and prove that $T_{1}$ and $T_{2}$ are isomorphic is equivalent to $P_{root(T_{1})} \equiv P_{root(T_{2})}$.
+
+Applying induction on the height of rooted trees.
+\begin{enumerate}[1]
+    \item If $h = 0$, it's trivial that $P_{root(T_{1})} = x_{0}$ and $P_{root(T_{2})} = x_{0}$, it's obvious $T_{1}$ and $T_{2}$ are isomorphic.
+    \item Assume that $\forall h \leq k$, we have $P_{root(T_{2})} \equiv P_{root(T_{2})}$ equivalent to the isomorphism between $T_{1}$ and $T_{2}$.
+    \item For $h = k + 1$, expand two polynomials, we have all terms are children vertices of $root(T_{1})$ and $root(T_{2})$, they are with heights $h = k$, can be verified by our hypothesis.
+          Thus, it still works.
+\end{enumerate}
+Combining all of above, \textbf{we can test the isomorphism of rooted trees by test their polynomial identity}. 
+
+We construct a polynomial as the subtraction of two polynomials:
+\begin{equation}
+    \begin{aligned}
+        Q \left(x_{0}, x_{1}, \ldots, x_{h} \right) = P_{root(T_{1})} - P_{root(T_{2})}
+    \end{aligned}
+\end{equation}
+We can test its identity on field $\mathbb{Z}_{p}$, where prime $p \geq 2n$.
+
+According to \textbf{Schwartz-Zippel Theorem}, the error probability:
+\[
+    \Pr \left[ Q(r_{0}, r_{1}, \ldots, r_{h}) = 0 \right] \leq \frac{n}{p} \leq \frac{n}{2n} = \frac{1}{2}
+\]        
+
+We can independently perform such identity test for $\log{n}$ times, thus we can reduce the error probability to:
+\[
+    \left( \frac{1}{2} \right)^{\log{n}} = O \left( \frac{1}{n} \right)
+\]
+
+\section{Problem 4}
+Consider we have a bijection $\sigma \in \mathbf{S_{n}}$, where $\mathbf{S_{n}}$ is the universe of permutations of set $\{1,2, \ldots, n\}$,
+$\sigma$ maps $a_{i}$ to $b_{\sigma_{i}}$, $1 \leq i \leq n$.That's to say, if $a_{1}, \ldots, a_{n}$ is a permutation of 
+$b_{1}, \ldots, b_{n}$, a $\sigma$ should be exist.
+Therefore, we can define \textbf{Edmonds} Matrix \textbf{A}:
+
+\[
+    \mathbf{A}_{ij} = \begin{cases}
+                x_{ij}, \qquad if\ a_{i} = b_{\sigma_{i}},\\
+                0, \qquad otherwise.
+             \end{cases}
+\]
+
+Matrix \textbf{A} has determinant: 
+\[
+    det(A) = \sum_{\sigma \in \mathbf{S_{n}}} sgn(\sigma) \prod_{i = 1}^{n} A_{i, \sigma_{i}}
+\]
+The determinant is a summation over $n!$ terms.It is helpful to analysis the result of $det(A)$, 
+it is non-zero if and only if when $a_{1}, a_{2}, \ldots, a_{n}$ is a permutation of $b_{1}, b_{2}, \ldots, b_{n}$. 
+
+Thus, We can construct a polynomial $\mathbf{Q}(x_{11}, x_{12}, \ldots, x_{nn}) = det(\mathbf{A})$.The problem of determination of
+permutation now transform to determine if $\mathbf{Q}(x_{11}, x_{12}, \ldots, x_{nn})$ is identically zero or not.
+
+To solve the problem, we first determine the degree of $n^2$ multivariate polynomial $\mathbf{Q}(x_{11}, x_{12}, \ldots, x_{nn}) \leq n$.
+We can test its identity on the field $\mathbb{Z}_{p}$, where prime $p \geq 2n$.
+
+According to \textbf{Schwartz-Zippel Theorem}, the error probability:
+\[
+    \Pr \left[ \mathbf{Q}(r_{11}, r_{12}, \ldots, r_{nn}) = 0 \right] \leq \frac{n}{p} \leq \frac{n}{2n} = \frac{1}{2}
+\]             
+The computation time complexity is dominated by the calculation of determinant, it's $O\left( n^{3} \right)$.
+
+We can independently perform such identity test for $\log{n}$ times, thus we can reduce the error probability to:
+\[
+    \left( \frac{1}{2} \right)^{\log{n}} = O \left( \frac{1}{n} \right)
+\]
+Combining all of above together, we can solve this problem in $O \left( n^{3} \log{n} \right)$ with error probability $O \left( \frac{1}{n} \right)$.
+
+\section{Problem 5}
+The original problem can be transformed to the following form: 
+\begin{equation}
+    \begin{aligned}
+        &\Pr \bigg[ e^{-\epsilon} Z \leq \hat{Z} \leq e^{\epsilon} Z \bigg] \geq 1 - \delta \\
+        \Longleftrightarrow &\Pr \bigg[ \hat{Z} \leq e^{-\epsilon} Z \text{\ or \ }  \hat{Z} \geq e^{\epsilon} Z \bigg] \leq \delta \\
+        \Longleftrightarrow &\Pr \bigg[ |\ln{\hat{Z}} - \ln{Z}| \geq \epsilon \bigg] \leq \delta \\
+    \end{aligned}
+\end{equation}
+
+It's obvious that:
+
+\begin{equation}
+    \begin{aligned}
+        \mathbb E \left[ \ln{\hat{Z}}\right] &= \mathbb E \left[ \sum_{i = 1}^{n} \hat{\rho_{i}} \right] \\
+                                             &= \sum_{i = 1}^{n} \mathbb E \left[ \hat{\rho_{i}} \right] \\
+                                             &= \sum_{i = 1}^{n} \mathbb E \left[ \frac{1}{s} \sum_{j = 1}^{s} X_{i}^{(j)} \right] \\
+                                             &= \sum_{i = 1}^{n} \rho_{i} \\
+                                             &= \ln{Z}
+    \end{aligned}
+\end{equation}
+
+Applying Chebyshev's Inequality, we obtain:
+\[
+    \Pr \left[ |\ln{\hat{Z}} - \mathbb E \left[ ln{\hat{Z}} \right] | \geq \epsilon \right] \leq \frac{\mathbf{Var} \left[ \ln{\hat{Z}}\right] }{\epsilon^{2}}
+\]
+
+Therefore, we need to calculate the variance of $\ln{\hat{Z}}$.
+\begin{equation}
+    \begin{aligned}
+        \mathbf{Var} \left[ \ln{\hat{Z}} \right] &= \mathbb E \left[ \left( \ln{\hat{Z}} \right)^2 \right] - \mathbb E^2 \left[ \ln{\hat{Z}} \right]\\
+                                                 &= \mathbb E \left[ \left( \sum_{i = 1}^{n} \hat{\rho_{i}} \right)^2 \right] - \left( \sum_{i = 1}^{n} \rho_{i} \right)^2 \\
+    \end{aligned}
+\end{equation}
+
+The first term can be expanded as below:
+\begin{equation}
+    \begin{aligned}
+        \mathbb E \left[ \left( \sum_{i = 1}^{n} \hat{\rho_{i}} \right)^2 \right] &= \mathbb E \left[ \sum_{i = 1}^{n} \hat{\rho_{i}}^2 + 2 \sum_{1 \leq i < j \leq n} \hat{\rho_{i}} \cdot \hat{\rho_{j}}\right] \\
+                                                                                  &= \sum_{i = 1}^{n} \mathbb E \left[ \hat{\rho_{i}}^2 \right] + 2 \sum_{1 \leq i < j \leq n} \mathbb E \left[ \hat{\rho_{i}} \cdot \hat{\rho_{j}} \right] \\
+                                                                                  &= \sum_{i = 1}^{n} \frac{1}{s} \mathbb E^2 \left[ X_{i} \right] + 2 \sum_{1 \leq i < j \leq n} \mathbb E \left[ \hat{\rho_{i}} \right] \cdot \mathbb E\left[ \hat{\rho_{j}} \right] \\
+                                                                                  &= \frac{1}{s} \sum_{i = 1}^{n}  \rho_{i}^2 + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j}
+    \end{aligned}
+\end{equation}
+
+Combining all of above:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ |\ln{\hat{Z}} - \mathbb E \left[ ln{\hat{Z}} \right] | \geq \epsilon \right] &\leq \frac{\mathbf{Var} \left[ \ln{\hat{Z}}\right] }{\epsilon^{2}} \\
+                                                                                                &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i}^2 + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j} - \left( \sum_{i = 1}^{n} \rho_{i} \right)^2 }{\epsilon^2} \\
+                                                                                                &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i}^2 - \sum_{i = 1}^{n} \rho_{i}^2}{\epsilon^2} \\
+                                                                                                &= \frac{\left( \frac{1}{s} - 1 \right) \sum_{i = 1}^{n} \rho_{i}^2}{\epsilon^2} \\
+                                                                                                &= \delta
+    \end{aligned}
+\end{equation}
+Solve the equation above, we get $s$:
+\[
+    s = \frac{1}{1 + \frac{\delta \epsilon^2}{\sum_{i = 1}^{n} \rho_{i}^2}} \\
+      \geq \frac{1}{1 + \frac{4 \delta \epsilon^2}{n}}
+\]
+
+\section{Problem 6}
+
+\end{document}
