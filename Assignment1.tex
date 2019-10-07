@@ -64,7 +64,7 @@ In the $i$-th ground contraction, the probability to choose an edge which is in 
 The algorithm perform $n - 2$ contractions on the graph, we get this lower bound:
 \begin{equation}
     \begin{aligned}
-        Pr \big[ \text{return weighted min-cut \textbf{C} }\big] &\geq \prod_{i = 0}^{n - 2} (1 - \frac{2}{n - i}) \\
+        Pr \big[ \text{return weighted min-cut \textbf{C} }\big] &\geq \prod_{i = 0}^{n - 3} (1 - \frac{2}{n - i}) \\
                                                  &= \prod_{i = 0}^{n - 3} \frac{ n - i - 2}{n - i} \\
                                                  &= \frac{2}{n ( n - 1)}
     \end{aligned}
