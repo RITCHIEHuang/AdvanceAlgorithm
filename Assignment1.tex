@@ -303,8 +303,8 @@ The first term can be expanded as below:
     \begin{aligned}
         \mathbb E \left[ \left( \sum_{i = 1}^{n} \hat{\rho_{i}} \right)^2 \right] &= \mathbb E \left[ \sum_{i = 1}^{n} \hat{\rho_{i}}^2 + 2 \sum_{1 \leq i < j \leq n} \hat{\rho_{i}} \cdot \hat{\rho_{j}}\right] \\
                                                                                   &= \sum_{i = 1}^{n} \mathbb E \left[ \hat{\rho_{i}}^2 \right] + 2 \sum_{1 \leq i < j \leq n} \mathbb E \left[ \hat{\rho_{i}} \cdot \hat{\rho_{j}} \right] \\
-                                                                                  &= \sum_{i = 1}^{n} \frac{1}{s} \mathbb E^2 \left[ X_{i} \right] + 2 \sum_{1 \leq i < j \leq n} \mathbb E \left[ \hat{\rho_{i}} \right] \cdot \mathbb E\left[ \hat{\rho_{j}} \right] \\
-                                                                                  &= \frac{1}{s} \sum_{i = 1}^{n}  \rho_{i}^2 + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j}
+                                                                                  &= \sum_{i = 1}^{n} \left( \frac{1}{s} \mathbf{Var} \left[ X_{i} \right] + \mathbb{E}^2 \left[ \rho_{i} \right] \right) + 2 \sum_{1 \leq i < j \leq n} \mathbb E \left[ \hat{\rho_{i}} \right] \cdot \mathbb E\left[ \hat{\rho_{j}} \right] \\
+                                                                                  &= \sum_{i = 1}^{n} \left( \frac{1}{s} \rho_{i} \cdot \left( 1 - \rho_{i} \right) + \rho_{i}^2 \right) + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j}
     \end{aligned}
 \end{equation}
 
@@ -312,16 +312,15 @@ Combining all of above:
 \begin{equation}
     \begin{aligned}
         \Pr \left[ |\ln{\hat{Z}} - \mathbb E \left[ ln{\hat{Z}} \right] | \geq \epsilon \right] &\leq \frac{\mathbf{Var} \left[ \ln{\hat{Z}}\right] }{\epsilon^{2}} \\
-                                                                                                &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i}^2 + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j} - \left( \sum_{i = 1}^{n} \rho_{i} \right)^2 }{\epsilon^2} \\
-                                                                                                &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i}^2 - \sum_{i = 1}^{n} \rho_{i}^2}{\epsilon^2} \\
-                                                                                                &= \frac{\left( \frac{1}{s} - 1 \right) \sum_{i = 1}^{n} \rho_{i}^2}{\epsilon^2} \\
+                                                                                                &= \frac{\sum_{i = 1}^{n} \left( \frac{1}{s} \rho_{i} \cdot \left( 1 - \rho_{i} \right) + \rho_{i}^2 \right) + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j} - \left( \sum_{i = 1}^{n} \rho_{i} \right)^2 }{\epsilon^2} \\
+                                                                                                &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i} \cdot \left( 1 - \rho_{i} \right)}{\epsilon^2} \\
                                                                                                 &= \delta
     \end{aligned}
 \end{equation}
 Solve the equation above, we get $s$:
 \[
-    s = \frac{1}{1 + \frac{\delta \epsilon^2}{\sum_{i = 1}^{n} \rho_{i}^2}} \\
-      \geq \frac{1}{1 + \frac{4 \delta \epsilon^2}{n}}
+    s = \frac{\sum_{i = 1}^{n} \rho_{i} \cdot \left( 1 - \rho_{i} \right)}{\delta \epsilon^2} \\
+      \geq \frac{\sum_{i = 1}^{n} \frac{1}{4}}{\delta \epsilon^2} = \frac{n}{4 \delta \epsilon^2}
 \]
 
 \section{Problem 6}
