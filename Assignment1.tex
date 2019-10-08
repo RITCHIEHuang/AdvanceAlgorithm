@@ -1,5 +1,5 @@
 \documentclass[a4paper, 12pt, titlepage]{article}
-
+\usepackage{ctex} 
 \usepackage{amssymb}
 \usepackage{amsmath}
 \newtheorem{theorem}{Theorem}
@@ -22,10 +22,12 @@
 \usepackage{enumerate}
 
 \title{Problem Set 1 Solutions}
-\author{ritchie huang}
+\author{姓名: 黄睿 \\ 学号: MP1933008}
 \date{2019-09-25}
 
 \begin{document}
+
+% \maketitle
 
 \section{Problem 1}
 
@@ -314,14 +316,15 @@ Combining all of above:
         \Pr \left[ |\ln{\hat{Z}} - \mathbb E \left[ ln{\hat{Z}} \right] | \geq \epsilon \right] &\leq \frac{\mathbf{Var} \left[ \ln{\hat{Z}}\right] }{\epsilon^{2}} \\
                                                                                                 &= \frac{\sum_{i = 1}^{n} \left( \frac{1}{s} \rho_{i} \cdot \left( 1 - \rho_{i} \right) + \rho_{i}^2 \right) + 2 \sum_{1 \leq i < j \leq n} \rho_{i} \cdot \rho_{j} - \left( \sum_{i = 1}^{n} \rho_{i} \right)^2 }{\epsilon^2} \\
                                                                                                 &= \frac{\frac{1}{s} \sum_{i = 1}^{n} \rho_{i} \cdot \left( 1 - \rho_{i} \right)}{\epsilon^2} \\
-                                                                                                &= \delta
+                                                                                                &\leq \frac{n}{4 \epsilon^2} \\
+                                                                                                &\leq \delta
     \end{aligned}
 \end{equation}
 Solve the equation above, we get $s$:
 \[
-    s = \frac{\sum_{i = 1}^{n} \rho_{i} \cdot \left( 1 - \rho_{i} \right)}{\delta \epsilon^2} \\
-      \geq \frac{\sum_{i = 1}^{n} \frac{1}{4}}{\delta \epsilon^2} = \frac{n}{4 \delta \epsilon^2}
+    s \geq \frac{n}{4 \delta \epsilon^2}
 \]
+So, we take $s = \lceil \frac{n}{4 \delta \epsilon^2} \rceil$.
 
 \section{Problem 6}
 \subsection{Question 1}
