@@ -1,0 +1,227 @@
+\documentclass[a4paper, 12pt, titlepage]{article}
+\usepackage{ctex} 
+\usepackage{amssymb}
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proof}{Proof}
+
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithmicx,algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\usepackage{mathtools}
+
+\usepackage{graphicx}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+\usepackage[CJKbookmarks]{hyperref}
+
+\usepackage{enumerate}
+
+\title{Problem Set 2 Solutions}
+\author{姓名: 黄睿 \\ 学号: MP1933008}
+\date{2019-10-23}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1}
+
+\subsection{Q1}
+$\Pr \left[ X \geq t \right] \Leftrightarrow \Pr \left[ e^{\lambda X} \geq e^{\lambda t} \right], \text{for} \lambda \geq 0.$
+Thus, the question tranformed to the equation on the right hand side.
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ X \geq t \right] = \Pr \left[ e^{\lambda X} \geq e^{\lambda t} \right] &\leq \frac{\mathbb{ E } \left[ e^{\lambda X} \right] }{e^{\lambda t}} \quad \left( \text{Markov Inequality} \right) \\
+                                                            &= \exp \left(- \left(\lambda t - \ln{\mathbb{E} \left[ e^{\lambda X} \right]} \right) \right) \\
+                                                            &= \exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right) \\ \
+                                                            &\leq \exp \left(- \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \right) \\
+                                                            &= \exp \left(- \Psi_{X}^{*}(t) \right)
+    \end{aligned}
+\end{equation}
+
+For $F(\lambda) = \lambda t - \Psi_{X}(\lambda), \lambda \geq 0 $.If $\Psi_{X}(\lambda)$ is continuously differentiable, we can perform standard analysis of this function, taking gradient of both sides:
+\[
+    \nabla_{\lambda} F(\lambda) = t - \nabla_{\lambda} \Psi_{X}(\lambda)  
+\]
+Let the gradient equal to 0, we can find that the unique $lambda \geq 0$ satisfying $\Psi_{X}'(\lambda) = t$, according to the convexity of $\Psi_{X}(\lambda)$, we obtain that: 
+\[
+    \Psi_{X}^{*}(t) = F(\lambda)|_{\Psi_{X}(\lambda) = t} = \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right)  
+\]
+
+\subsection{Q2}
+
+Gaussian random variable $\mathbf{X}$, it's probability density function is given by $f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{ (x - \mu )^2 }{2 \sigma^2}}$, so we have:
+
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}(\lambda) &= \ln \mathbb E \left[ e^{\lambda X} \right] \\
+                          &= \ln \int_{- \infty}^{\infty} e^{\lambda x} \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{ (x - \mu )^2 }{2 \sigma^2}} \, dx \\
+                          &= \ln \left[ \frac{1}{\sqrt{2 \pi \sigma^2}} \int_{- \infty}^{\infty} e^{\lambda x - \frac{(x - \mu)^2}{2 \sigma^2}} \,dx \right] \\
+                          &= \ln \left[ \frac{1}{\sqrt{2 \pi \sigma^2}} \int_{- \infty}^{\infty} e^{- \frac{\left( x - (\lambda \sigma^2 + \mu) \right)^2 - \left( \lambda^2 \sigma^4 + 2 \lambda \mu \sigma^2 \right)}{2 \sigma^2}} \, dx \right] \\
+                          &= \ln \left[ e^{\lambda \mu + \frac{\lambda^2 \sigma^2}{2}} \frac{1}{ \sqrt{2 \pi \sigma^2}} \int_{- \infty}^{\infty} e^{- \left( \frac{x - (\lambda \sigma^2 + \mu)}{ \sqrt{2} \sigma } \right)^2 } \, dx \right] \\
+                          &= \ln \left[ e^{\lambda \mu + \frac{\lambda^2 \sigma^2}{2}} \frac{1}{ \sqrt{2 \pi \sigma^2}} \int_{- \infty}^{\infty} e^{- t^2 } \, d \left( \sqrt{2} \sigma t \right) \right] \quad \left(\text{let } t = \frac{x - (\lambda \sigma^2 + \mu)}{ \sqrt{2} \sigma } \right)\\
+                          &= \ln \left[ e^{\lambda \mu + \frac{\lambda^2 \sigma^2}{2}} \frac{1}{\sqrt{\pi}} \int_{- \infty}^{\infty} e^{- t^2 } \, dt \right] \\
+                          &= \ln \left[ e^{\lambda \mu + \frac{\lambda^2 \sigma^2}{2}} \right] \\
+                          &= \lambda \mu + \frac{\lambda^2 \sigma^2}{2}
+    \end{aligned}
+\end{equation}
+
+Thus, we can calculate $\Psi_{X}^{*}(t)$
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
+                        &= \sup_{\lambda \geq 0} \left( \lambda t - \lambda \mu - \frac{\lambda^2 \sigma^2}{2} \right) \\
+                        &= \frac{ \lambda^2 \sigma^2 }{2}
+    \end{aligned}
+\end{equation}
+
+Now, the upper tail can be bounded:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ X \geq t \right] \leq \exp \left( - \frac{\lambda^2 \sigma^2}{2} \right)
+    \end{aligned}
+\end{equation}
+
+\subsection{Q3}
+Poisson random variable $\mathbf{X ~}$, it's probability distribution is given by $\Pr \left[ X = k \right] = e^{-\nu} \frac{\nu^{k}}{k!}$
+We have:
+
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}(\lambda) &= \ln \mathbb E \left[ e^{\lambda X} \right] \\
+                          &= \ln \sum_{k = 0}^{\infty} \Pr \left[ X = k \right] e^{\lambda k} \\
+                          &= \ln \sum_{k = 0}^{\infty} e^{ \lambda k - \nu } \frac{ \nu^{k}}{ k! } \\
+                          &= \ln \left[ e^{ - \nu } \sum_{k = 0}^{\infty} e^{ \lambda k } \frac{ \nu^{k} }{ k! } \right] \\
+                          &= \ln \left[ e^{ - \nu } \sum_{k = 0}^{\infty} \frac{\left( e^{ \lambda } \nu \right)^{k}}{ k! } \right] \\
+                          &= \ln \left[ e^{ - \nu } e^{e^{\lambda} \nu } \right] \\
+                          &= \left( e^{ \lambda } - 1 \right) \nu 
+    \end{aligned}
+\end{equation}
+
+Then, we get $\Psi_{X}{*}(t)$:
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
+                       &= \sup_{\lambda \geq 0} \left( \lambda t - (e^{\lambda} - 1) \nu ) \right) \\
+                       &= \lambda e^{\lambda} \nu - (e^{\lambda} - 1) \nu \\
+                       &= \left( (\lambda - 1) e^{\lambda} + 1 \right) \nu 
+    \end{aligned}
+\end{equation}
+
+According to $Q_1$, we have:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ X \geq t \right] \leq \exp \left( - \left( (\lambda - 1) e^{\lambda} + 1 \right) \nu  \right)
+    \end{aligned}
+\end{equation}
+
+
+\subsection{Q4}
+Bernoulli ranndom variable $\mathbf{X}$, it's probability distribution is given by $\Pr \left[ X = 1 \right] = 1 - \Pr \left[ X = 0 \right] = p $, thus we have:
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}(\lambda) &= \ln \mathbb E \left[ e^{\lambda X} \right] \\
+                          &= \ln \left[ p e^{\lambda} + (1 - p) \right] \\
+    \end{aligned}
+\end{equation}
+
+Then, we get:
+\begin{equation}\label{equation-9}
+    \begin{aligned}
+        \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
+                       &= \sup_{\lambda \geq 0} \left( \lambda t - \ln \left[ p e^{\lambda} + (1 - p) \right] \right) \\
+    \end{aligned}
+\end{equation}
+For the equation above, taking derivative w.r.t $\lambda$, we have:
+\[
+    t = \frac{ e^{\lambda} p }{ e^{\lambda} + 1 - p }
+\]
+
+We may solve $\lambda$:
+\[
+    \lambda = \ln \left[ \frac{ (1 - p) t }{ (1 - t) p } \right]
+\]
+
+Thus, we may combing with equation \ref{equation-9}:
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}^{*}(t) &= \ln \left[ \frac{ (1 - p) t }{ (1 - t) p } \right] t - \ln \left[ p \frac{ (1 - p) t }{ (1 - t) p } + (1 - p) \right] \\
+                        &= (1 - t) \ln \frac{ 1 - t }{1 - p} + t \ln \frac{t}{p}
+    \end{aligned}
+\end{equation}
+
+
+\subsection{Q5}
+As $X_1, X_2, \cdots, X_n$ are i.i.d random variables, we have:
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}(\lambda) &= \ln \mathbb E \left[ e^{\lambda X} \right] \\
+                           &= \ln \mathbb E \left[ e^{\lambda \sum_{i = 1}^{n} X_{i}} \right] \\
+                           &= \ln \prod_{i = 1}^{n} \mathbb E \left[ e^{\lambda X_{i} } \right] \\
+                           &= \sum_{i = 1}^{n} \ln \mathbb E \left[ e^{\lambda X_{i} } \right] \\
+                           &= \sum_{i = 1}^{n} \Psi_{X_{i}}(\lambda)
+    \end{aligned}
+\end{equation}
+
+Similarly, for $\Psi_{X}^{*}(t)$, we have:
+\begin{equation}\label{equation-9}
+    \begin{aligned}
+        \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
+                        &= \sup_{\lambda \geq 0} \left( \lambda t - \sum_{i = 1}^{n} \Psi_{X_{i}}(\lambda) \right) \\
+                        &= \sum_{i = 1}^{n} \sup_{\lambda \geq 0} \left( \lambda \frac{t}{n} - \Psi_{X_{i}}(\lambda) \right) \\
+                        &= \sum_{i = 1}^{n} \Psi_{X_{i}}^{*}(\frac{t}{n}) \\
+                        &= n \Psi_{X_{i}}^{*}(\frac{t}{n}) \quad (i.i.d)
+    \end{aligned}
+\end{equation}
+
+For Binomial random variable $X \sim Bin(n, p)$, it can be decomposed as sum of $ n \text{\, i.i.d random Bernoulli random variables\, } X_{1}, X_{2}, \cdots, X_{n} $.
+According to what we have above, the upper bound can be measured:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ X \geq t \right] &\leq \exp \left( - \Psi_{X}^{*}(t) \right) \\
+                                    &= \exp \left( - n \Psi_{X_{i}}^{*}(\frac{t}{n}) \right) \\
+                                    &= \exp \left( - n D(Y || X_{i}) \right)  
+    \end{aligned}
+\end{equation}
+Where $Y \in \{ 0, 1 \}$ is a Bernoulli random variable with parameter $ \frac{t}{n} $.
+
+Given geometric random variable $\mathbf{X}$ with distribution $\Pr \left[ X = k \right] = ( 1- p)^{k -1} p$.
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}(\lambda) &= \ln \mathbb E \left[ e^{\lambda X} \right] \\
+                          &= \ln \sum_{k = 1}^{\infty} \Pr \left[ X = k \right] e^{\lambda k} \\
+                          &= \ln \sum_{k = 1}^{\infty} e^{\lambda k} (1-p)^{k - 1} p \\
+                          &= \ln \frac{e^{\lambda } p}{e^{\lambda } (p-1)+1} \\
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \begin{aligned}
+        \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
+                        &= \sup_{\lambda \geq 0} \left( \lambda t - \ln \frac{e^{\lambda } p}{e^{\lambda } (p-1)+1} \right) \\
+                        &= t \ln \left(\frac{1-t}{(p-1) t}\right)-\ln \left(-\frac{p (t-1)}{p-1}\right)
+    \end{aligned}
+\end{equation}
+
+Combining all of them together:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ X \geq t \right] &\leq \exp \left( - \Psi_{X}^{*}(t) \right) \\
+                                    &= \exp \left( - n \Psi_{X_{i}}^{*}(\frac{t}{n}) \right) \\
+                                    &= \exp \left( - t \ln \left(\frac{n-t}{(p-1) t}\right) + n \ln \left(-\frac{p (t-n)}{n(p-1)}\right) \right)  
+    \end{aligned}
+\end{equation}
+\section{Problem 2}
+
+
+\section{Problem 3}
+
+\section{Problem 4}
+
+
+\end{document}
