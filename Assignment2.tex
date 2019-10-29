@@ -253,6 +253,8 @@ Now that $f$ satisfying Lipschitz condition with constants $1$, we can apply \te
 Let $ \log_{n}{2} - \frac{t^2}{2} = -c$, we have: $c = \frac{t^2}{2} - \log_{n}{2}$.
 
 \section{Problem 3}
+
+\subsection{Q1}
 It's obvious that $\forall 1 \leq i \leq n, \Pr \left[ Y_{i} = 1 \right] \leq p $, we can let $\Pr \left[ Y_{i} = 1 \right] = t_{i}, \quad \text{where} \quad t_{i} \leq p, i = 1, 2, \cdots, n$.Thus, $\forall 1 \leq i \leq n$, we generate $A$ as a uniform random variable between $\left[ 0, 1 \right]$, we can construct the
 coupling $\mathcal{C}$ as below:
 \[
@@ -276,6 +278,7 @@ According to stochastic dominance, we have:
     \forall a > 0, \Pr \left[ \sum_{i = 1}^{n} Y_{i} \geq a \right] \leq \Pr \left[ \sum_{i = 1}^{n} X_{i} \leq a \right] 
 \]
 
+\subsection{Q2}
 Now that $X_{1}, X_{2}, \cdots, X_{n}$ are mutually independent, by linearity of expectation, it holds that $\mathbb E \left[ \sum_{i = 1}^{n} X_{i} \right] = np$.
 \begin{equation}
     \begin{aligned}
@@ -286,6 +289,32 @@ Now that $X_{1}, X_{2}, \cdots, X_{n}$ are mutually independent, by linearity of
 \end{equation}
 
 \section{Problem 4}
+\subsection{Q1}
+The origin triangle inequality can be rewrited:
+\begin{equation}
+    \begin{aligned}
+        &\quad \, d(A, B) + d(B, C) \geq d(A, C) \\
+        &\Leftrightarrow 1 - sim(A, B) + 1 - sim(B, C) \geq 1 - sim(A, C) \\
+        &\Leftrightarrow sim(A, B) + sim(B, C) - sim(A, C) \leq 1 \\
+        &\Leftrightarrow \Pr_{h \in \mathcal F} \left[ h(A) = h(B) \right] + \Pr_{h \in \mathcal F} \left[ h(B) = h(C) \right] - \Pr_{h \in \mathcal F} \left[ h(A) = h(C) \right] \leq 1 \\
+        &\Leftrightarrow \Pr_{h \in \mathcal F} \left[ h(A) = h(B) \right] + \Pr_{h \in \mathcal F} \left[ h(B) = h(C) \right] - \Pr_{h \in \mathcal F} \left[ (h(A) = h(B)) \wedge (h(B) = h(C)) \right] \leq 1 \\
+        &\Leftrightarrow \Pr_{h \in \mathcal F} \left[ (h(A) = h(B)) \vee (h(B) = h(C)) \right] \leq 1
+    \end{aligned}
+\end{equation}
+It's obvious that probability value is less or equal than $1$.
 
-
+\subsection{Q2}
+Assume that we have locality sensitive hash function family corresponding to Dice's coefficient, by triangle inequality we have:
+\begin{equation}
+    \begin{aligned}
+        &\forall A, B, C \in 2^{U}, d(A, B) + d(B, C) \geq d(A, C) \\
+        &\Leftrightarrow \frac{|A| + |B| - 2 |A \cap B|}{|A| + |B|} + \frac{|B| + |C| - 2 |B \cap C|}{|B| + |C|} \geq \frac{|A| + |C| - 2 |A \cap C|}{|A| + |C|} \\ 
+    \end{aligned}
+\end{equation}
+Let $|A| = |C| = \frac{|U|}{2}, A = U - C, B = U$, we get:
+\[
+    \frac{\frac{|U|}{2}}{\frac{3|U|}{2}} + \frac{\frac{|U|}{2}}{\frac{3|U|}{2}} \geq 1 \Leftrightarrow \frac{2}{3} \geq 1 \quad (Contradiction)
+\]
+Thus, we can prove that nno locality sensitive hash function family corresponding to Dice's coefficient.
+\subsection{Q3}
 \end{document}
