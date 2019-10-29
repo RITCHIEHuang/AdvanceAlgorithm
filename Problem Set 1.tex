@@ -1,0 +1,284 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\date{}
+
+\begin{document}
+
+姓名：于志华 学号：MP1933026
+
+\hypertarget{header-n2}{%
+\subsection{Problem 1}\label{header-n2}}
+
+
+\textbf{Weighted min-cut algorithm}
+
+\textbf{input}: multi-graph \textbf{G(V,E)},where every edge
+\(e \in \boldsymbol{E}\) is associated with a positive real weight
+\(w_{e}\)
+
+
+while \textbf{\textbar{}V\textbar{}\textgreater{}2} do
+
+choose an edge \textbf{\( uv \in \boldsymbol {E} \)} with probability
+proportional to the weight of \( uv \) ;
+
+\textbf{G = Contract(G,uv)} ;
+
+return \textbf{C = E}
+
+
+\textbf{Proof.}
+
+\textbf{if} \(\sum_{l}w_{l}\) \( \in\boldsymbol{C} \) is a min-cut in
+G,\textbf{then}
+\( \sum_{m} w_{m} \in \boldsymbol{E} \geq \frac{|V| \sum_{l}w_{l} \in \boldsymbol{C}}{2} \)
+
+\textbf{so}
+\(p_{i} = 1- \frac{\sum_{l}w_{l} \in \boldsymbol{C}}{\sum_{m}w_{m}\in\boldsymbol{E_{i}}}\)
+
+\(\geq 1- \frac{2}{|V_{i}|}\)
+
+\(=1-\frac{2}{n-i+1}\)
+
+\( p_{corret}= \) Pr{[}a weighted minimum cut is returned by weighted
+algorithm{]}
+
+\(\geq\) Pr{[}C is returned by weighted algorithm{]}
+
+\( = \) Pr{[}\( e_{i} \notin C \) for all i =1,2,...,n-2{]}
+
+\(=\)
+\(\prod_{i=1}^{n-2} \operatorname{Pr}\left[e_{i} \notin C | \forall j<i, e_{j} \notin C\right]\)
+
+\( \geq \prod_{i=1}^{n-2} \left( 1-\frac{2}{n-i+1}\right) \)
+
+\(= \frac{2}{n(n-1)}\)
+
+\hypertarget{header-n26}{%
+\subsection{Problem 2}\label{header-n26}}
+
+(1)
+
+Consider the probability of two vertex not in same subset S or T:
+
+\( Pr[X_{u},X_{v} \text{not in the same subset}]=\frac{2*C_{n-2}^{\frac{n}{2}-1}}{C_{n}^{\frac{n}{2}}}=\frac{n}{2(n-1)}\text{where u,v} \in E\)
+
+So
+\(E[|E(S,T)|]=\sum_{uv\in{E}}Pr[X_{u},X_{v}\text{not in the same subset}]=\frac{nm}{2(n-1)}\)
+
+(2)
+
+
+\textbf{Generate random subset \(S \in F\)}
+
+
+\textbf{input}: collection of subset F,p=\(\frac{1}{2}\)
+
+
+while\textbar{}F\textbar{}\textgreater{}1 do:
+
+\(X=R(p)\)
+
+if X=0 delete the first half F else delete the last half F
+
+return S=F
+
+
+With p=\(\frac{1}{2}\) ,such that \(Pr[X=1]=Pr[X=0]=\frac{1}{2}\) ,the
+probability of pick a specific S from F is \(\frac{1}{2^{log|F|}}\) ,the
+total probability is \(|F|*\frac{1}{2^{log|F|}}=1\) ,so the algorithm
+generates random subset \(S \in F \) uniformly at random. The number of
+times that the random sources is called is log\textbar{}F\textbar{}.
+
+\hypertarget{header-n44}{%
+\subsection{Problem 3}\label{header-n44}}
+
+
+\textbf{Randomized algorithm for testing isomorphism}
+
+
+\textbf{input:} two rooted trees \(T_{1},T_{2}\) ,a finite set S
+
+
+for each vertex v in \(T_{1}\)or\(T_{2}\):
+
+if v is leaf :set \(P_{v}=x_{0}\)
+
+else: with the height h of v and his children,set
+\(P_{v}=\prod_{i=1}^{k}(x_{h}-P_{v_{k}})\)
+
+pick \(r_{1},r_{2},...r_{h} \in S\) uniformly and independently at
+random
+
+if \(P_{T_{1}}(r_{1},r_{2},...r_{h}) = P_{T_{2}}(r_{1},r_{2},...r_{h})\)
+then return True else return False
+
+
+By the above method,it is clear that the degree of
+\( P_{T_{1}}(\vec{x})\) or \( P_{T_{2}}(\vec{x})\) is at most n(n is the
+vertex of the \(T_{1}\)or\(T_{2} \) ),then by Schwartz-Zippel Theorem
+,\(Pr[P_{T_{1}}(\vec{r})=0] \leq \frac{n}{|S|}\) ,so the probability of
+being incorrect \(\leq \frac{n}{|S|}\) .
+
+\hypertarget{header-n57}{%
+\subsection{Problem 4}\label{header-n57}}
+
+
+\textbf{Fingerprint for testing sequence}
+
+
+\textbf{input:} two
+sequence\(A= \{a_{1},a{2},...a_{n} \},B= \{b_{1},b_{2},...b_{n} \}\)
+
+
+construct \( f_{A}(x)= \prod_{i=1}^{n}(x-a_{i})\)
+,\(f_{B}(x)= \prod_{i=1}^{n}(x-b_{i})\) ,
+
+in the meantime get \(t_{a}=max(A),t_{b}=max(B)\)
+
+if \(t_{a} \neq t_{b}\) ,return False
+
+if \(t \leq n\) :set \(p \in [(nlogn)^{2},2(nlogn)^{2}]\) else :set
+\( p\in[n^{2}log(n)log(t),2n^{2}log(n)log(t)]\)
+
+where p is a uniform random prime chosen from list and set the finite
+field \(Z_{p}=[p]\)
+
+choose a element \textbf{r} uniformly from{[}p{]}
+
+if \(f_{A}(r)\text{ mod } p = f_{B}(r)\text{ mod }p\) then return True
+else return False
+
+
+if \(t\leq n\) ,then by Theorem(Lipton 1989),the probability of
+\(A \neq B\) is \( Pr[FING(A)=FING(B)]=O(\frac{1}{n})\)
+
+if \(t \geq n\) :
+
+\(Pr[FING(A)=FING(B)]= Pr[f_{A}(r)=f_{B}(r)|f_{A}\neq f_{B}]Pr[f_{A}\neq f_{B}]\)
+
++\(Pr[f_{A}(r)=f_{B}(r)|f_{A}= f_{B}]Pr[f_{A}=f_{B}]\)
+
+\(\leq Pr[f_{A}(r)=f_{B}(r)|f_{A}\neq f_{B}]+Pr[f_{A}=f_{B}]\)
+
+note that the degree of \(f_{A},f_{B}\) are at most n and r is chosen
+uniformly from {[}p{]},
+
+By the Schwartz-Zippel theorem for univariate polynomials
+
+\(Pr[f_{A}(r)=f_{B}(r)|f_{A}\neq f_{B}] \leq \frac{n}{p} =O(\frac{1}{nlogt})\)
+
+with non-zero coefficient \(c \leq t^{n}\) .The event \(f_{A}=f_{B}\)
+occurs only if c mod p =0,
+
+which means:
+
+\(Pr[f_{A}=f_{B}]\leq Pr[c\text{ mod } p=0]\)
+
+\(= \frac{\text{number of prime factors of c}}{\text{number of primes in}[n^{2}log(n)log(t),2n^{2}log(n)log(t)]}\)
+
+\(\leq \frac{nlog(t)}{\pi(2n^{2}log(n)log(t))-\pi(n^{2}log(n)log(t))}\)
+
+\(=O(\frac{nlog(t)}{n^{2}log(t)})\)
+
+\(=O(\frac{1}{n})\)
+
+Combing everything together ,we have the error probability is
+\(O(\frac{1}{n})\) ,time complexity is \(O(n)\)
+
+\hypertarget{header-n87}{%
+\subsection{Problem 5}\label{header-n87}}
+
+\(lnZ -\epsilon \leq ln\widehat{Z} \leq lnZ + \epsilon \longrightarrow e^{- \epsilon Z} \leq \widehat{Z} \leq e^{\epsilon}Z \)
+
+\( E[X_{i}] = p_{i} \)
+
+\( E[\hat{p_{i}}]=E[\frac{1}{s} \sum_{j=1}^{s}X_{i}^{(j)}]= \frac{1}{s}*s*E[X_{i}] = p_{i} \)
+
+\( E[ln\widehat{Z}] = E[ln \prod_{i=1}^{n}\hat{p_{i}}]= \sum_{i=1}^{n}p_{i}=lnZ \)
+
+It is not hard to know that \( Var[X_{i}]= p_{i}*(1-p_{i})\) and because
+\(p_{i} \geq \frac{1}{2}\)
+
+\(Var[ln\widehat{Z}]=Var[\sum_{i=1}^{n}\frac{1}{s} \sum_{j=1}^{s}X_{i}^{(j)}]= \frac{1}{s}\sum_{i=1}^{n}p_{i}*(1-p_{i})\leq \frac{n}{4s} \)
+
+\( Pr[e^{\epsilon}Z \leq \widehat{Z} \leq e^{\epsilon}Z] \)
+
+\(= Pr[lnZ - \epsilon \leq ln\widehat{Z} \leq lnZ+ \epsilon] \)
+
+\( = Pr[|ln\widehat{Z}| \leq \epsilon] \)
+
+\(Pr[|ln\widehat{Z}|>\epsilon]\)
+
+\(\leq \frac{1}{\epsilon^{2}}Var[ln\widehat{Z}]\)
+
+\(\leq \frac{n}{4s\epsilon^{2}}\leq \delta\)
+
+When \( s\geq\left\lceil\frac{n}{4\delta\epsilon^{2}}\right\rceil \)
+,this probability is at most \(\delta\) ,so does the probability above
+
+\hypertarget{header-n104}{%
+\subsection{Problem 6}\label{header-n104}}
+
+(1) the last two-choice half will change the bad situation,and othe
+affet is constant,so the maximum load is \(O(loglogn)\)
+
+(2) the first two-choice half will not affect last random half ,and
+other affect is constant,so the maximum load is
+\(O(\frac{logn}{loglogn})\)
+
+(3) the maximum load is \(O(loglogn)\)
+
+\end{document}

@@ -38,17 +38,19 @@ Thus, the question tranformed to the equation on the right hand side.
     \begin{aligned}
         \Pr \left[ X \geq t \right] = \Pr \left[ e^{\lambda X} \geq e^{\lambda t} \right] &\leq \frac{\mathbb{ E } \left[ e^{\lambda X} \right] }{e^{\lambda t}} \quad \left( \text{Markov Inequality} \right) \\
                                                             &= \exp \left(- \left(\lambda t - \ln{\mathbb{E} \left[ e^{\lambda X} \right]} \right) \right) \\
-                                                            &= \exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right) \\ \
-                                                            &\leq \exp \left(- \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \right) \\
-                                                            &= \exp \left(- \Psi_{X}^{*}(t) \right)
+                                                            &= \exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right)
+                                                            
     \end{aligned}
 \end{equation}
+
+Let $\lambda \geq 0, s.t. \lambda* t - \Psi_{X}(\lambda*) = \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right)$, 
+&= \exp \left(- \Psi_{X}^{*}(t) \right)
 
 For $F(\lambda) = \lambda t - \Psi_{X}(\lambda), \lambda \geq 0 $.If $\Psi_{X}(\lambda)$ is continuously differentiable, we can perform standard analysis of this function, taking gradient of both sides:
 \[
     \nabla_{\lambda} F(\lambda) = t - \nabla_{\lambda} \Psi_{X}(\lambda)  
 \]
-Let the gradient equal to 0, we can find that the unique $lambda \geq 0$ satisfying $\Psi_{X}'(\lambda) = t$, according to the convexity of $\Psi_{X}(\lambda)$, we obtain that: 
+Let the gradient equal to 0, we can find that the unique $\lambda \geq 0$ satisfying $\Psi_{X}'(\lambda) = t$, according to the convexity of $\Psi_{X}(\lambda)$, we obtain that: 
 \[
     \Psi_{X}^{*}(t) = F(\lambda)|_{\Psi_{X}(\lambda) = t} = \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right)  
 \]
@@ -131,7 +133,7 @@ Bernoulli ranndom variable $\mathbf{X}$, it's probability distribution is given 
 \end{equation}
 
 Then, we get:
-\begin{equation}\label{equation-9}
+\begin{equation} \label{equation-9}
     \begin{aligned}
         \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
                        &= \sup_{\lambda \geq 0} \left( \lambda t - \ln \left[ p e^{\lambda} + (1 - p) \right] \right) \\
@@ -169,7 +171,7 @@ As $X_1, X_2, \cdots, X_n$ are i.i.d random variables, we have:
 \end{equation}
 
 Similarly, for $\Psi_{X}^{*}(t)$, we have:
-\begin{equation}\label{equation-9}
+\begin{equation}
     \begin{aligned}
         \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
                         &= \sup_{\lambda \geq 0} \left( \lambda t - \sum_{i = 1}^{n} \Psi_{X_{i}}(\lambda) \right) \\
@@ -216,10 +218,72 @@ Combining all of them together:
                                     &= \exp \left( - t \ln \left(\frac{n-t}{(p-1) t}\right) + n \ln \left(-\frac{p (t-n)}{n(p-1)}\right) \right)  
     \end{aligned}
 \end{equation}
+
 \section{Problem 2}
 
+We define any vertex $u \in V(Q_n)$ as n independent random variables $(X_{1}, X_{2}, \cdots, X_{n}) $ where $X_{i} \in \{ 0, 1 \}, i = 1, 2, \cdots, n $.
+
+Next, we can prove the function $f(X_{1}, X_{2}, \cdots, X_{n})$ satisfying the Lipschitz condition. For any $X_{1}, X_{2}, \cdots, X_{n}$ and any $Y_{i} \in \{ 0, 1 \}, i = 1, 2, \cdots, n$.
+We denote vertex $\mathbf{u}$ as $(X_{1}, X_{2}, \cdots, X_{i - 1}, X_{i}, \cdots, X_{n})$, and vertex $\mathbf{w}$ as \\$(X_{1}, X_{2}, \cdots, X_{i - 1}, Y_{i}, \cdots, X_{n})$.According to
+the definition of shortest distance, we know that there's an edge between vertex $\mathbf{u}$ and vertex $\mathbf{w}$.\\ Thus, we have:
+\[
+    1 + f(\mathbf{u}) \leq f(\mathbf{w}) 
+\]
+Symmetrically, we have:
+\[
+    1 + f(\mathbf{w}) \leq f(\mathbf{u})  
+\]
+Combining them, we have:
+\begin{equation}
+    \begin{aligned}
+        | f(\mathbf{u}) - f(\mathbf{w}) | \leq 1
+    \end{aligned}
+\end{equation}
+
+Now that $f$ satisfying Lipschitz condition with constants $1$, we can apply \textbf{Method of bounded differences}:
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[| f(\mathbf{X}) - \mathbb E \left[ f(\mathbf{X}) \right] | \geq t \sqrt{n \log{n}} \right] &\leq 2 \exp \left( - \frac{t^2 n \log{n}}{2 \sum_{i = 1}^{n} 1^2}\right) \\
+                                                                                                             &= 2 \exp \left( - \frac{t^2 \log{n}}{2} \right) \\
+                                                                                                             &= 2 n^{- \frac{t^2}{2} } \\
+                                                                                                             &= n^{ \log_{n}{2} - \frac{t^2}{2}}           
+    \end{aligned}
+\end{equation}
+
+Let $ \log_{n}{2} - \frac{t^2}{2} = -c$, we have: $c = \frac{t^2}{2} - \log_{n}{2}$.
 
 \section{Problem 3}
+It's obvious that $\forall 1 \leq i \leq n, \Pr \left[ Y_{i} = 1 \right] \leq p $, we can let $\Pr \left[ Y_{i} = 1 \right] = t_{i}, \quad \text{where} \quad t_{i} \leq p, i = 1, 2, \cdots, n$.Thus, $\forall 1 \leq i \leq n$, we generate $A$ as a uniform random variable between $\left[ 0, 1 \right]$, we can construct the
+coupling $\mathcal{C}$ as below:
+\[
+    Y_{i} = \begin{cases}
+        1, if \ A \leq t_{i} \\
+        0, otherwise
+    \end{cases}  
+\]
+\[
+    X_{i} = \begin{cases}
+        1, if \ A \leq p \\
+        0, otherwise
+    \end{cases}  
+\]
+We can easily verify that $\forall 1 \leq i \leq n, Y_{i} \leq X_{i}$, formally:
+\[
+    \Pr_{\mathcal{C}} \left[ \forall 1 \leq i \leq n, Y_{i} \leq X_{i} \right] = 1
+\]
+According to stochastic dominance, we have:
+\[
+    \forall a > 0, \Pr \left[ \sum_{i = 1}^{n} Y_{i} \geq a \right] \leq \Pr \left[ \sum_{i = 1}^{n} X_{i} \leq a \right] 
+\]
+
+Now that $X_{1}, X_{2}, \cdots, X_{n}$ are mutually independent, by linearity of expectation, it holds that $\mathbb E \left[ \sum_{i = 1}^{n} X_{i} \right] = np$.
+\begin{equation}
+    \begin{aligned}
+        \Pr \left[ \sum_{i = 1}^{n} Y_{i} \geq np + t \right] &\leq  \Pr \left[ \sum_{i = 1}^{n} X_{i} \geq np + t \right] \\
+                                                              &= \Pr \left[ \sum_{i = 1}^{n} X_{i} - \mathbb E \left[ \sum_{i = 1}^{n} X_{i} \right] \geq t \right] \\
+                                                              &\leq \exp \left( - \frac{2 t^2}{n} \right) \quad (\text{Chernoff Bound})
+    \end{aligned}
+\end{equation}
 
 \section{Problem 4}
 
