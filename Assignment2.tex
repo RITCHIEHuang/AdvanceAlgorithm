@@ -315,6 +315,31 @@ Let $|A| = |C| = \frac{|U|}{2}, A = U - C, B = U$, we get:
 \[
     \frac{\frac{|U|}{2}}{\frac{3|U|}{2}} + \frac{\frac{|U|}{2}}{\frac{3|U|}{2}} \geq 1 \Leftrightarrow \frac{2}{3} \geq 1 \quad (Contradiction)
 \]
-Thus, we can prove that nno locality sensitive hash function family corresponding to Dice's coefficient.
+Thus, we can prove that no locality sensitive hash function family corresponding to Dice's coefficient.
+
+Accordingly, let $|A| =  |C| = \frac{|U|}{2}, A = U - C, B = U$, we have:
+\[
+    d(A, B) + d(B, C) = 1 - sim_{Ovl}(A, B) + 1 - sim_{Ovl}(B, C) \\
+                      = 1 - 1 + 1 - 1
+                      = 0
+\]     
+
+\[
+    d(A, C) = 1 - sim_{Ovl}(A, C) = 1 - 0 = 1
+\]
+Thus, we have:
+\[
+    d(A, B) + d(B, C) \leq d(A, C)
+\]
+We get contradiction, thus we proved that no locality sensitive hash function family corresponding to Overlap's coefficient.
 \subsection{Q3}
+Assuming we have $A, B \in \{0, 1\}^m$:
+\begin{equation}
+    \begin{aligned}
+        \Pr_{h' \in \mathcal F'} \left[ h'(A) = h'(B) \right] &= \Pr_{h \in \mathcal F} \left[ h(A) = h(B) \right] \cdot \Pr_{f \in \mathcal B} \left[ f(h(A)) = f(h(B))\right] \\
+                                                              &+ \Pr_{h \in \mathcal F} \left[ h(A) \neq h(B) \right] \cdot \Pr_{f \in \mathcal B} \left[ f(h(A)) = f(h(B))\right] \\
+                                                              &= sim(A, B) \cdot 1 + (1 - sim(A, B)) \cdot \frac{1}{2} \\
+                                                              &= \frac{1 + sim(A, B)}{2}
+    \end{aligned}
+\end{equation}
 \end{document}
