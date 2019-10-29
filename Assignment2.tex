@@ -38,14 +38,14 @@ Thus, the question tranformed to the equation on the right hand side.
     \begin{aligned}
         \Pr \left[ X \geq t \right] = \Pr \left[ e^{\lambda X} \geq e^{\lambda t} \right] &\leq \frac{\mathbb{ E } \left[ e^{\lambda X} \right] }{e^{\lambda t}} \quad \left( \text{Markov Inequality} \right) \\
                                                             &= \exp \left(- \left(\lambda t - \ln{\mathbb{E} \left[ e^{\lambda X} \right]} \right) \right) \\
-                                                            &= \exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right)
-                                                            
+                                                            &= \exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right)                                                         
     \end{aligned}
 \end{equation}
 
-Let $\lambda \geq 0, s.t. \lambda* t - \Psi_{X}(\lambda*) = \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right)$, 
-&= \exp \left(- \Psi_{X}^{*}(t) \right)
-
+We have $\exp \left(- \left(\lambda t - \Psi_{X}(\lambda) \right) \right) \geq \exp \left( - \Psi_{X}^{*}(\lambda) \right)$, thus:
+\[
+    \Pr \left[ X \geq t \right] = \exp \left( - \Psi_{X}^{*}(\lambda) \right)
+\]
 For $F(\lambda) = \lambda t - \Psi_{X}(\lambda), \lambda \geq 0 $.If $\Psi_{X}(\lambda)$ is continuously differentiable, we can perform standard analysis of this function, taking gradient of both sides:
 \[
     \nabla_{\lambda} F(\lambda) = t - \nabla_{\lambda} \Psi_{X}(\lambda)  
