@@ -275,7 +275,7 @@ We can easily verify that $\forall 1 \leq i \leq n, Y_{i} \leq X_{i}$, formally:
 \]
 According to stochastic dominance, we have:
 \[
-    \forall a > 0, \Pr \left[ \sum_{i = 1}^{n} Y_{i} \geq a \right] \leq \Pr \left[ \sum_{i = 1}^{n} X_{i} \leq a \right] 
+    \forall a > 0, \Pr \left[ \sum_{i = 1}^{n} Y_{i} \geq a \right] \leq \Pr \left[ \sum_{i = 1}^{n} X_{i} \geq a \right] 
 \]
 
 \subsection{Q2}
@@ -307,8 +307,7 @@ It's obvious that probability value is less or equal than $1$.
 Assume that we have locality sensitive hash function family corresponding to Dice's coefficient, by triangle inequality we have:
 \begin{equation}
     \begin{aligned}
-        &\forall A, B, C \in 2^{U}, d(A, B) + d(B, C) \geq d(A, C) \\
-        &\Leftrightarrow \frac{|A| + |B| - 2 |A \cap B|}{|A| + |B|} + \frac{|B| + |C| - 2 |B \cap C|}{|B| + |C|} \geq \frac{|A| + |C| - 2 |A \cap C|}{|A| + |C|} \\ 
+        &\forall A, B, C \in 2^{U}, d(A, B) + d(B, C) \geq d(A, C)
     \end{aligned}
 \end{equation}
 Let $|A| = |C| = \frac{|U|}{2}, A = U - C, B = U$, we get:
