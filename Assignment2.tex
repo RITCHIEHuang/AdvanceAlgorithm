@@ -20,7 +20,7 @@
 \usepackage[CJKbookmarks]{hyperref}
 
 \usepackage{enumerate}
-
+\usepackage{latexalpha2}
 \title{Problem Set 2 Solutions}
 \author{姓名: 黄睿 \\ 学号: MP1933008}
 \date{2019-10-23}
@@ -73,19 +73,20 @@ Gaussian random variable $\mathbf{X}$, it's probability density function is give
     \end{aligned}
 \end{equation}
 
-Thus, we can calculate $\Psi_{X}^{*}(t)$
+Thus, we can calculate $\Psi_{X}^{*}(t)$:
+
 \begin{equation}
     \begin{aligned}
         \Psi_{X}^{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
                         &= \sup_{\lambda \geq 0} \left( \lambda t - \lambda \mu - \frac{\lambda^2 \sigma^2}{2} \right) \\
-                        &= \frac{ \lambda^2 \sigma^2 }{2}
+                        &= \frac{ (t - \mu)^2 }{2 \sigma^2}
     \end{aligned}
 \end{equation}
 
 Now, the upper tail can be bounded:
 \begin{equation}
     \begin{aligned}
-        \Pr \left[ X \geq t \right] \leq \exp \left( - \frac{\lambda^2 \sigma^2}{2} \right)
+        \Pr \left[ X \geq t \right] \leq \exp \left( - \frac{ (t - \mu)^2 }{2 \sigma^2} \right)
     \end{aligned}
 \end{equation}
 
@@ -106,19 +107,19 @@ We have:
 \end{equation}
 
 Then, we get $\Psi_{X}{*}(t)$:
+
 \begin{equation}
     \begin{aligned}
         \Psi_{X}{*}(t) &= \sup_{\lambda \geq 0} \left( \lambda t - \Psi_{X}(\lambda) \right) \\
                        &= \sup_{\lambda \geq 0} \left( \lambda t - (e^{\lambda} - 1) \nu ) \right) \\
-                       &= \lambda e^{\lambda} \nu - (e^{\lambda} - 1) \nu \\
-                       &= \left( (\lambda - 1) e^{\lambda} + 1 \right) \nu 
+                       &= t \ln{\frac{t}{\nu}} - t + \nu
     \end{aligned}
 \end{equation}
 
 According to $Q_1$, we have:
 \begin{equation}
     \begin{aligned}
-        \Pr \left[ X \geq t \right] \leq \exp \left( - \left( (\lambda - 1) e^{\lambda} + 1 \right) \nu  \right)
+        \Pr \left[ X \geq t \right] \leq \exp \left( - \left( t \ln{\frac{t}{\nu}} - t + \nu \right) \right)
     \end{aligned}
 \end{equation}
 

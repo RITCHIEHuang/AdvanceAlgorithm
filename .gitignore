@@ -21,3 +21,5 @@
 *.fdb_latexmk
 *.synctex.gz
 
+# wolfram related
+*.tmp

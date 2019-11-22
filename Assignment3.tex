@@ -1,5 +1,5 @@
 \documentclass[a4paper, 12pt, titlepage]{article}
-\usepackage{CJKutf8} 
+\usepackage{ctex} 
 \usepackage{amssymb}
 \usepackage{amsmath}
 \newtheorem{theorem}{Theorem}
@@ -22,17 +22,18 @@
 \usepackage{enumerate}
 
 \usepackage{listings}
+\usepackage{latexalpha2}
 
 \begin{document}
 
-\begin{CJK}{UTF8}{gbsn}
+% \begin{CJK}{UTF8}{gbsn}
 \title{Problem Set 3 Solutions}
 \author{姓名: 黄睿 \\ 学号: MP1933008}
 \date{2019-11-16}
 
 
 \maketitle
-\end{CJK}
+% \end{CJK}
 
 \section{Problem 1}
 
@@ -123,16 +124,15 @@ Thus, we proved the approximation ratio is $0.5$.
     \end{algorithmic}
 \end{algorithm}
 
-Let $C_{i}$ be the elements covered in $i$ coverage, where $i = 1, 2, \cdots, k$.We can prove the approximation ratio by perform induction on $i$.
+Let $C_{i}$ be the elements covered in $i$ coverage, where $i = 1, 2, \cdots, k$.We can prove the approximation ratio by performing induction on $i$.
 
 If $i = 1$, It's trivial that: $C_{1} \geq 1 - \left( 1 - \frac{1}{k} \right)^{1} \cdot OPT$.
 By taking greedy strategy we have each step, we cover \textbf{at least} $\frac{1}{k}$ of uncovered elements.Thus,
 \begin{equation}
 	\begin{aligned}
-		C_{i + 1} &\geq C_{i} + \frac{n - C_{i}}{k} \\
-				  &= \left(1 - \frac{1}{k} \right) C_{i} + \frac{n}{k} \\
-				  &\geq \left(1 - \frac{1}{k} \right)\left[ 1 - \left( 1 - \frac{1}{k} \right)^{i} \right] \cdot OPT + \frac{n}{k} \\
-				  &= \left[ 1 - \left( 1- \frac{1}{k} \right)^{i + 1} \right] \cdot OPT + \frac{n}{k} - \frac{OPT}{k} \qquad (n \geq OPT) \\ 
+		C_{i + 1} &\geq C_{i} + \frac{OPT - C_{i}}{k - i} \\
+				  &\geq \left(1 - \frac{1}{k} \right) C_{i} + \frac{OPT}{k} \\
+				  &\geq \left(1 - \frac{1}{k} \right)\left[ 1 - \left( 1 - \frac{1}{k} \right)^{i} \right] \cdot OPT + \frac{OPT}{k} \\
 				  &\geq \left[ 1 - \left( 1- \frac{1}{k} \right)^{i + 1} \right] \cdot OPT
 	\end{aligned}
 \end{equation}
@@ -219,6 +219,18 @@ By performing LP relaxation, the integer program transforms to LP:
 \end{equation}
 
 \subsection{Q2}
+\begin{figure} 
+    \wolframgraphics[pdf]{Plot3D[Sin[x]Cos[y], {x, -2Pi, 2Pi}, {y, -2Pi, 2Pi}]}{example}
+    \includegraphics{example.pdf}
+    \caption{Plot of $f(x,y)=\sin(x)\cos(y)$}
+    \centering
+\end{figure}
 
+\begin{figure} 
+    \wolframgraphics[pdf]{Table[Plot[{1 - k^(-x), (k - 1)/k x}, {x, 0, 1}], {k, 3, 6}]}{figure2}
+    \includegraphics{figure2.pdf}
+    \caption{Plot of $f(x) = 1 - \frac{x}{k}$ and $\frac{k - 1}{k} x$}
+    \centering
+\end{figure}
 
 \end{document}
