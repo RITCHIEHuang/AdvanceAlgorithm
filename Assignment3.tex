@@ -133,7 +133,7 @@ By taking greedy strategy we have each step, we cover \textbf{at least} $\frac{1
 		C_{i + 1} &\geq C_{i} + \frac{OPT - C_{i}}{k - i} \\
 				  &\geq \left(1 - \frac{1}{k} \right) C_{i} + \frac{OPT}{k} \\
 				  &\geq \left(1 - \frac{1}{k} \right)\left[ 1 - \left( 1 - \frac{1}{k} \right)^{i} \right] \cdot OPT + \frac{OPT}{k} \\
-				  &\geq \left[ 1 - \left( 1- \frac{1}{k} \right)^{i + 1} \right] \cdot OPT
+				  &= \left[ 1 - \left( 1- \frac{1}{k} \right)^{i + 1} \right] \cdot OPT
 	\end{aligned}
 \end{equation}
 Let $i + 1 = k$, we have:
@@ -219,18 +219,6 @@ By performing LP relaxation, the integer program transforms to LP:
 \end{equation}
 
 \subsection{Q2}
-\begin{figure} 
-    \wolframgraphics[pdf]{Plot3D[Sin[x]Cos[y], {x, -2Pi, 2Pi}, {y, -2Pi, 2Pi}]}{example}
-    \includegraphics{example.pdf}
-    \caption{Plot of $f(x,y)=\sin(x)\cos(y)$}
-    \centering
-\end{figure}
 
-\begin{figure} 
-    \wolframgraphics[pdf]{Table[Plot[{1 - k^(-x), (k - 1)/k x}, {x, 0, 1}], {k, 3, 6}]}{figure2}
-    \includegraphics{figure2.pdf}
-    \caption{Plot of $f(x) = 1 - \frac{x}{k}$ and $\frac{k - 1}{k} x$}
-    \centering
-\end{figure}
 
 \end{document}
